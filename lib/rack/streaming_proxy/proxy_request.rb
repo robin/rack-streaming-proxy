@@ -71,16 +71,8 @@ class Rack::StreamingProxy
 
       while chunk = read_from_child
         break if chunk == :done
-        if chunked
-          size = bytesize(chunk)
-          next if size == 0
-          yield [size.to_s(16), term, chunk, term].join
-        else
-          yield chunk
-        end
+        yield chunk
       end
-
-      yield ["0", term, "", term].join if chunked
     end
 
 
